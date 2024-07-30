@@ -28,11 +28,20 @@ async def subscribe_requests(client: AsyncClientSession):
         request_full,
     )
 
-    async for result in client.subscribe(query):
-        print(result)
+    async for request in client.subscribe(query):
+        node = request["createdRequest"]["requestEdge"]["node"]
+        print(f"[*] New request {node['id']}")
+        finding = analyse(node)
+        if finding:
+            print(f"[-] Found reflected parameter(s) {finding.parameters} in request {finding.id}")
+            await create_finding(client, finding)
 
 
 async def process_requests(client: AsyncClientSession, after: str = None):
+    if os.getenv("PROCESS_EXISTING") != "true":
+        print("[*] Not processing existing requests")
+        return
+
     print("[*] Processing existing requests")
     query = gql(
         """
