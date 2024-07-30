@@ -5,7 +5,8 @@ from dataclasses import dataclass
 @dataclass
 class Finding:
     id: str
-    parameters: list[str]
+    parameters: list[(str, str)]
+    dedup_key: str
 
 
 def analyse(request) -> Finding | None:
@@ -25,8 +26,9 @@ def analyse(request) -> Finding | None:
     reflected_parameters = []
     for key, value in parameters.items():
         if value.encode() in response_raw:
-            reflected_parameters.append(key)
+            reflected_parameters.append((key, value))
 
     if reflected_parameters:
-        return Finding(request["id"], reflected_parameters)
+        dedupe_key = f"{request['method']}-{request['host']}-{request['path']}"
+        return Finding(request["id"], reflected_parameters, dedupe_key)
     return None

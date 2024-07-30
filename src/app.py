@@ -8,6 +8,7 @@ from gql.transport.websockets import WebsocketsTransport
 from .queries import request_full
 from .gql import gql
 from .analyze import analyse
+from .finding import create_finding
 
 
 async def subscribe_requests(client: AsyncClientSession):
@@ -61,6 +62,7 @@ async def process_requests(client: AsyncClientSession, after: str = None):
             finding = analyse(request)
             if finding:
                 print(f"[-] Found reflected parameter(s) {finding.parameters} in request {finding.id}")
+                await create_finding(client, finding)
 
         i += len(result["requests"]["nodes"])
         print(f"[*] Processed {i} requests")
