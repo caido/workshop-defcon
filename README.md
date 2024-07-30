@@ -8,3 +8,4 @@ Check the various branches of the repository to view the different example prese
 - `tool-complete`: Final code for the tool
 - `plugin-starter`: Start code for the plugin
 - `plugin-complete`: Final code for the plugin
+- `client-server`: Mock client/server to generate traffic
