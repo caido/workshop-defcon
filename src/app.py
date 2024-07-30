@@ -16,7 +16,7 @@ async def subscribe_requests(client: AsyncClientSession):
     query = gql(
         """
         subscription {
-            createdRequest {
+            updatedRequest {
               requestEdge {
                 node {
                   ...RequestFull
@@ -29,7 +29,7 @@ async def subscribe_requests(client: AsyncClientSession):
     )
 
     async for request in client.subscribe(query):
-        node = request["createdRequest"]["requestEdge"]["node"]
+        node = request["updatedRequest"]["requestEdge"]["node"]
         print(f"[*] New request {node['id']}")
         finding = analyse(node)
         if finding:
