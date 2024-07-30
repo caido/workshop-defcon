@@ -1,6 +1,6 @@
-# Tool Complete
+# Tool Starter
 
-This is the complete tool built during the workshop
+This is the starter tool to build during the workshop
 
 ## Quickstart
 
