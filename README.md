@@ -1,10 +1,10 @@
-# Plugin complete
+# Plugin Starter
 
-This is the complete plugin built during the workshop.
+This is the starter plugin for the workshop.
 
 ## Quickstart
 
-1. `pnpm install`
+1. `npm install`
 1. Make some modifications in `src`
-1. `pnpm build`
+1. `npm build`
 1. Upload the plugin.zip in the `dist` folder to your Caido instance
