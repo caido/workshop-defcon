@@ -41,12 +41,17 @@ const addPage = (sdk: CaidoSDK) => {
       <span>Called:</span>
       <span class="reflector__value">${count}</span>
     </div>
+    <div class="reflector__error">
+      <span>Error:</span>
+      <span class="reflector__error"></span>
+    </div>
     <div>
       <button class="c-button" data-command="${Commands.analyse}">Analyse</button>
     </div>
   `;
 
   const countElement = body.querySelector(".reflector__value") as HTMLElement;
+  const errorElement = body.querySelector(".reflector__error") as HTMLElement;
   const analyseButton = body.querySelector(
     `[data-command="${Commands.analyse}"]`,
   ) as HTMLButtonElement;
@@ -64,6 +69,8 @@ const addPage = (sdk: CaidoSDK) => {
     analyseButton.disabled = true;
     try {
       await analyse(sdk);
+    } catch (err: any) {
+      errorElement.innerHTML = err.toString();
     } finally {
       analyseButton.disabled = false;
     }

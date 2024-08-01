@@ -5,7 +5,7 @@ import type { Finding } from "./analyse";
 export async function createFinding(sdk: SDK, finding: Finding) {
   let description = "Found reflected parameters in reponse:\n";
   for (let [key, value] of finding.parameters) {
-    description += `"- ${key}: ${value}\n`;
+    description += `- ${key}: ${value}\n`;
   }
 
   const result = await sdk.findings.create({

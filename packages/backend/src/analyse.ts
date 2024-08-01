@@ -17,9 +17,14 @@ export function analyse(request: Request, response: Response): Finding | null {
   const parameters = Object.fromEntries(
     query
       .split("&")
-      .flatMap<[string, string] | null>((part) => {
-        const [key, value] = part.split("=", 2);
-        return value ? [key!, value] : null;
+      .map<[string, string] | null>((part) => {
+        const i = part.indexOf("=");
+        if (i === -1) {
+          return null;
+        }
+        const key = part.slice(0, i);
+        const value = part.slice(i + 1);
+        return value ? [key, value] : null;
       })
       .filter(notNullable),
   );

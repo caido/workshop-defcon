@@ -32,7 +32,9 @@ async function process_existing(sdk: SDK): Promise<void> {
       const finding = analyse(request, response);
       if (finding) {
         sdk.console.log(
-          `Found reflected parameter(s) ${finding.parameters} in request {finding.id}`,
+          `Found reflected parameter(s) ${
+            finding.parameters
+          } in request ${finding.request.getId()}`,
         );
         await createFinding(sdk, finding);
       }
@@ -40,6 +42,7 @@ async function process_existing(sdk: SDK): Promise<void> {
 
     sdk.console.log(`Processed ${count} requests`);
     nextPage = result.pageInfo.hasNextPage;
+    after = result.pageInfo.endCursor;
   } while (nextPage);
 
   sdk.console.log("Finished analyzing existing requests");
