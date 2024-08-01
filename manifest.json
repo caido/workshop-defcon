@@ -1,0 +1,30 @@
+{
+  "id": "reflector",
+  "name": "Reflector",
+  "version": "0.1.0",
+  "description": "This checks for reflected query parameters",
+  "author": {
+    "name": "Emile Fugulin",
+    "email": "emile@caido.io",
+    "url": "https://github.com/caido/workshop-defcon"
+  },
+  "plugins": [
+    {
+      "kind": "frontend",
+      "id": "reflector-frontend",
+      "name": "Reflector Frontend",
+      "entrypoint": "frontend/script.js",
+      "style": "frontend/style.css",
+      "backend": {
+        "id": "reflector-backend"
+      }
+    },
+    {
+      "kind": "backend",
+      "id": "reflector-backend",
+      "name": "Reflector Backend",
+      "runtime": "javascript",
+      "entrypoint": "backend/script.js"
+    }
+  ]
+}
