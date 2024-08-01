@@ -2,7 +2,7 @@
   "name": "reflector",
   "type": "module",
   "scripts": {
-    "build": "node scripts/clean.js && npm build --workspaces && node scripts/pack.js"
+    "build": "node scripts/clean.js && npm run build --workspaces && node scripts/pack.js"
   },
   "devDependencies": {
     "@caido/plugin-manifest": "0.1.3",
