@@ -9,8 +9,40 @@ import { createFinding } from "./finding";
 let FILE: FileHandle | null = null;
 const FILE_MUTEX = new Mutex();
 
-function process_existing(sdk: SDK): void {
+async function process_existing(sdk: SDK): Promise<void> {
   sdk.console.log("Analyzing existing requests");
+
+  let nextPage = true;
+  let after = null;
+  let count = 0;
+  do {
+    // Query page
+    // @ts-ignore
+    let query = sdk.requests.query();
+    query = query.first(100);
+    if (after) {
+      query = query.after(after);
+    }
+
+    let result = await query.execute();
+    count += result.items.length;
+
+    // Analyse page
+    for (const { request, response } of result.items) {
+      const finding = analyse(request, response);
+      if (finding) {
+        sdk.console.log(
+          `Found reflected parameter(s) ${finding.parameters} in request {finding.id}`,
+        );
+        await createFinding(sdk, finding);
+      }
+    }
+
+    sdk.console.log(`Processed ${count} requests`);
+    nextPage = result.pageInfo.hasNextPage;
+  } while (nextPage);
+
+  sdk.console.log("Finished analyzing existing requests");
 }
 
 async function process_new(
