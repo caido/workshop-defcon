@@ -16,7 +16,7 @@ async def search(session: aiohttp.ClientSession):
         async with session.get(url, proxy=PROXY) as response:
             return await response.text()
     else:
-        async with session.get(url, proxy=PROXY) as response:
+        async with session.post(url, proxy=PROXY) as response:
             return await response.text()
 
 
