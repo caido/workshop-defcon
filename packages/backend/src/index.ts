@@ -3,7 +3,7 @@ import type { SDK, DefineAPI } from "caido:plugin";
 import { FileHandle, open } from "fs/promises";
 import { Mutex } from "async-mutex";
 
-import { analyse } from "./analyze";
+import { analyse } from "./analyse";
 import { createFinding } from "./finding";
 
 let FILE: FileHandle | null = null;
