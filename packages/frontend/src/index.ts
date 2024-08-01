@@ -91,7 +91,7 @@ export const init = (sdk: CaidoSDK) => {
   addPage(sdk);
 
   // Register sidebar
-  sdk.sidebar.registerItem("My plugin", Page, {
+  sdk.sidebar.registerItem("Reflector", Page, {
     icon: "fas fa-wand-magic-sparkles",
   });
 };
