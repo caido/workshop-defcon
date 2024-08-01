@@ -1,0 +1,16 @@
+{
+  "name": "reflector",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/clean.js && npm run build --workspaces && node scripts/pack.js"
+  },
+  "devDependencies": {
+    "@caido/plugin-manifest": "0.1.3",
+    "jszip": "3.10.1",
+    "typescript": "5.4.3",
+    "vite": "5.2.7"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
