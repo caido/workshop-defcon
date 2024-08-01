@@ -35,20 +35,30 @@ const analyse = async (sdk: CaidoSDK) => {
 const addPage = (sdk: CaidoSDK) => {
   const count = getCount(sdk);
   const body = document.createElement("div");
-  body.className = "my-plugin";
+  body.className = "reflector";
   body.innerHTML = `
-    <div class="my-plugin__count">
+    <div class="reflector__count">
       <span>Called:</span>
-      <span class="my-plugin__value">${count}</span>
+      <span class="reflector__value">${count}</span>
     </div>
     <div>
       <button class="c-button" data-command="${Commands.analyse}">Analyse</button>
     </div>
   `;
 
+  const countElement = body.querySelector(".reflector__value") as HTMLElement;
   const analyseButton = body.querySelector(
     `[data-command="${Commands.analyse}"]`,
   ) as HTMLButtonElement;
+
+  sdk.storage.onChange((newStorage) => {
+    const storage = newStorage as PluginStorage | undefined;
+
+    if (storage) {
+      countElement.innerHTML = `${storage.count}`;
+      return;
+    }
+  });
 
   analyseButton.addEventListener("click", async () => {
     analyseButton.disabled = true;
