@@ -13,6 +13,22 @@ from .finding import create_finding
 
 async def subscribe_requests(client: AsyncClientSession):
     print("[*] Subscribing to new requests")
+    query = gql(
+        """
+        subscription {
+            # CODE
+        }
+        """,
+        request_full,
+    )
+
+    async for request in client.subscribe(query):
+        node = request["updatedRequest"]["requestEdge"]["node"]
+        print(f"[*] New request {node['id']}")
+        finding = analyse(node)
+        if finding:
+            print(f"[-] Found reflected parameter(s) {finding.parameters} in request {finding.id}")
+            await create_finding(client, finding)
 
 
 async def process_requests(client: AsyncClientSession, after: str = None):
@@ -21,6 +37,30 @@ async def process_requests(client: AsyncClientSession, after: str = None):
         return
 
     print("[*] Processing existing requests")
+    query = gql(
+        """
+        query Requests($first: Int, $after: String) {
+            # CODE
+        }
+        """,
+        request_full,
+    )
+
+    after = None
+    i = 0
+    while True:
+        result = [] # CODE
+
+        for request in result["requests"]["nodes"]:
+            finding = analyse(request)
+            if finding:
+                print(f"[-] Found reflected parameter(s) {finding.parameters} in request {finding.id}")
+                await create_finding(client, finding)
+
+        i += len(result["requests"]["nodes"])
+        print(f"[*] Processed {i} requests")
+
+        # CODE
 
 
 async def app():
