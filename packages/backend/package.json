@@ -9,7 +9,6 @@
     "async-mutex": "0.5.0"
   },
   "devDependencies": {
-    "@types/node": "22.0.0",
-    "@caido/sdk-backend": "0.39.0"
+    "@caido/sdk-backend": "0.40.0"
   }
 }

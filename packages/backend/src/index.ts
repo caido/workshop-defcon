@@ -29,6 +29,10 @@ async function process_existing(sdk: SDK): Promise<void> {
 
     // Analyse page
     for (const { request, response } of result.items) {
+      if (!response) {
+        continue;
+      }
+
       const finding = analyse(request, response);
       if (finding) {
         sdk.console.log(
