@@ -12,6 +12,38 @@ const FILE_MUTEX = new Mutex();
 async function process_existing(sdk: SDK): Promise<void> {
   sdk.console.log("Analyzing existing requests");
 
+  let nextPage = true;
+  let after = null;
+  let count = 0;
+  do {
+    // Query page
+    let query = {}; // CODE
+
+    // @ts-ignore
+    let result = await query.execute();
+    count += result.items.length;
+
+    // Analyse page
+    for (const { request, response } of result.items) {
+      if (!response) {
+        continue;
+      }
+
+      const finding = analyse(request, response);
+      if (finding) {
+        sdk.console.log(
+          `Found reflected parameter(s) ${
+            finding.parameters
+          } in request ${finding.request.getId()}`,
+        );
+        await createFinding(sdk, finding);
+      }
+    }
+
+    sdk.console.log(`Processed ${count} requests`);
+    // CODE
+  } while (nextPage);
+
   sdk.console.log("Finished analyzing existing requests");
 }
 
@@ -21,10 +53,21 @@ async function process_new(
   response: Response,
 ): Promise<void> {
   sdk.console.log(`New request ${request.getId()}`);
+
+  const finding = analyse(request, response);
+  if (finding) {
+    sdk.console.log(
+      `Found reflected parameter(s) ${finding.parameters} in request {finding.id}`,
+    );
+    await createFinding(sdk, finding);
+    // CODE
+  }
 }
 
-export type API = DefineAPI<{}>;
+export type API = DefineAPI<{}>; // CODE
 
 export async function init(sdk: SDK) {
   FILE = await open("output.txt", "a");
+
+  // CODE
 }
